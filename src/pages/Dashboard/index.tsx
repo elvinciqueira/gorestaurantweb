@@ -39,7 +39,9 @@ const Dashboard: React.FC = () => {
     food: Omit<IFoodPlate, 'id' | 'available'>,
   ): Promise<void> {
     try {
-      // TODO ADD A NEW FOOD PLATE TO THE API
+      const response = await api.post('foods', { ...food, available: true });
+
+      setFoods(state => [...state, response.data]);
     } catch (err) {
       console.log(err);
     }
@@ -52,7 +54,9 @@ const Dashboard: React.FC = () => {
   }
 
   async function handleDeleteFood(id: number): Promise<void> {
-    // TODO DELETE A FOOD PLATE FROM THE API
+    await api.delete(`foods/${id}`);
+
+    setFoods(state => state.filter(stateFood => stateFood.id !== id));
   }
 
   function toggleModal(): void {
